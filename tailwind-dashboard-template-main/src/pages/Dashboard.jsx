@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Sidebar from '../partials/Sidebar';
 import Header from '../partials/Header';
+import { Edit, CheckCircle, Trash2 } from 'lucide-react';
+
 
 function Dashboard() {
   const [editingTaskId, setEditingTaskId] = useState(null);
@@ -131,11 +133,18 @@ function Dashboard() {
                       <td className="px-6 py-4">{task.createdAt ? new Date(task.createdAt).toLocaleString() : 'N/A'}</td>
                       <td className="px-6 py-4">{task.dueDate || 'Chưa đặt'}</td>
                       <td className="px-6 py-4">{task.updatedAt ? new Date(task.updatedAt).toLocaleString() : 'N/A'}</td>
-                      <td className="px-6 py-4 text-center">
-                        <button onClick={() => handleEditTask(task.id)} className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-green-600">Sửa</button>
-                        <button onClick={() => handleCompleteTask(task.id)} className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 ml-2">Hoàn thành</button>
-                        <button onClick={() => handleDeleteTask(task.id)} className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 ml-2">Xóa</button>
-                      </td>
+                      <td className="px-6 py-4 text-center flex gap-2 justify-center">
+                        <button onClick={() => handleEditTask(task.id)} className="text-blue-500 hover:text-blue-700">
+                        <Edit size={20} />
+                        </button>
+                        <button onClick={() => handleCompleteTask(task.id)} className="text-green-500 hover:text-green-700">
+                        <CheckCircle size={20} />
+                        </button>
+                        <button onClick={() => handleDeleteTask(task.id)} className="text-red-500 hover:text-red-700">
+                        <Trash2 size={20} />
+                        </button>
+                        </td>
+
                     </tr>
                   ))}
                 </tbody>
