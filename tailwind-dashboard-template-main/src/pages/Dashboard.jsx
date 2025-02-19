@@ -6,6 +6,7 @@ import { Edit, CheckCircle, Trash2 } from 'lucide-react';
 
 
 function Dashboard() {
+  const [searchTerm, setSearchTerm] = useState('');
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const[filteredTasks, setFilteredTasks] = useState([]);
@@ -72,8 +73,13 @@ function Dashboard() {
   };
 
   useEffect(() => {
-    setFilteredTasks(tasks.filter(task => filter === 'Tất cả' || task.status === filter));
-  }, [tasks, filter]);
+    setFilteredTasks(tasks.filter(task =>
+      (filter === 'Tất cả' || task.status === filter) &&
+      (task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+       task.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+       task.status.toLowerCase().includes(searchTerm.toLowerCase())) 
+    ));
+  }, [tasks, filter, searchTerm]);
   
 
   return (
@@ -103,14 +109,14 @@ function Dashboard() {
               </button>
             </div>
             <div className="mb-4">
-              Tìm kiếm <br></br>
-              <select onChange={handleChange} className="px-4 py-2 border border-gray-300 rounded-md w-50 mb-2">     
-                <option value="Tất cả">Tất cả</option>
-                <option value="Chưa làm">Chưa làm</option>
-                <option value="Đang làm">Đang làm</option>
-                <option value="Hoàn thành">Hoàn thành</option>
-              </select>      
-                </div>
+            <input
+              type="text"
+              placeholder="Tìm kiếm theo tiêu đề, mô tả, trạng thái..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="px-4 py-2 border border-gray-300 rounded-md w-full"
+            />
+            </div>
             <div className="overflow-x-auto bg-white shadow rounded-lg">
               <table className="min-w-full bg-white border border-gray-200">
                 <thead>
