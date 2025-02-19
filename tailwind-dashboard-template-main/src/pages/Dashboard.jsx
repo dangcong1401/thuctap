@@ -6,6 +6,12 @@ import { Edit, CheckCircle, Trash2 } from 'lucide-react';
 
 
 function Dashboard() {
+  const [taskStats, setTaskStats] = useState({
+    total: 0,
+    completed: 0,
+    inProgress: 0,
+    notStarted: 0,
+  });  
   const [searchTerm, setSearchTerm] = useState('');
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -80,6 +86,16 @@ function Dashboard() {
        task.status.toLowerCase().includes(searchTerm.toLowerCase())) 
     ));
   }, [tasks, filter, searchTerm]);
+
+  useEffect(() => {
+    const total = tasks.length;
+    const completed = tasks.filter(task => task.status === 'Hoàn thành').length;
+    const inProgress = tasks.filter(task => task.status === 'Đang làm').length;
+    const notStarted = tasks.filter(task => task.status === 'Chưa làm').length;
+  
+    setTaskStats({ total, completed, inProgress, notStarted });
+  }, [tasks]);
+  
   
 
   return (
@@ -150,9 +166,29 @@ function Dashboard() {
                         <Trash2 size={20} />
                         </button>
                         </td>
-
                     </tr>
                   ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="overflow-x-auto bg-white shadow rounded-lg">
+              <h2 className="text-xl font-semibold text-gray-700 dark:text-dark-100 mb-4">Thống kê công việc</h2>
+              <table className="min-w-full border border-gray-300">
+                <thead>
+                  <tr className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+                    <th className="px-4 py-2 border">Tổng số công việc</th>
+                    <th className="px-4 py-2 border">Đã hoàn thành</th>
+                    <th className="px-4 py-2 border">Đang làm</th>
+                    <th className="px-4 py-2 border">Chưa làm</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="text-center">
+                    <td className="px-4 py-2 border">{taskStats.total}</td>
+                    <td className="px-4 py-2 border text-green-500">{taskStats.completed}</td>
+                    <td className="px-4 py-2 border text-yellow-500">{taskStats.inProgress}</td>
+                    <td className="px-4 py-2 border text-red-500">{taskStats.notStarted}</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
