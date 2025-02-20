@@ -113,7 +113,7 @@ function Sidebar({
                               <path d="M5.936.278A7.983 7.983 0 0 1 8 0a8 8 0 1 1-8 8c0-.722.104-1.413.278-2.064a1 1 0 1 1 1.932.516A5.99 5.99 0 0 0 2 8a6 6 0 1 0 6-6c-.53 0-1.045.076-1.548.21A1 1 0 1 1 5.936.278Z" />
                               <path d="M6.068 7.482A2.003 2.003 0 0 0 8 10a2 2 0 1 0-.518-3.932L3.707 2.293a1 1 0 0 0-1.414 1.414l3.775 3.775Z" />
                             </svg>
-                            <span className="ml-4 text-sm font-medium">{`Danh Sách Công Việc`}</span>
+                            <span className="ml-4 text-sm font-medium">{`Công Việc`}</span>
                           </div>
                           <div className="flex shrink-0 ml-2">
                             <svg className={`w-3 h-3 shrink-0 ml-1 fill-current text-gray-400 dark:text-gray-500 ${open && "rotate-180"}`} viewBox="0 0 12 12">
@@ -126,13 +126,7 @@ function Sidebar({
                         <ul className={`pl-8 mt-1 ${!open && "hidden"}`}>
                           {/* List of tasks */}
                           <li className="mb-1">
-                            <NavLink to="" className="block text-sm font-medium text-gray-500 hover:text-violet-500 dark:text-gray-400 dark:hover:text-gray-200 transition duration-150">Chưa Làm</NavLink>
-                          </li>
-                          <li className="mb-1">
-                            <NavLink to="" className="block text-sm font-medium text-gray-500 hover:text-violet-500 dark:text-gray-400 dark:hover:text-gray-200 transition duration-150">Đang làm</NavLink>
-                          </li>
-                          <li className="mb-1">
-                            <NavLink to="" className="block text-sm font-medium text-gray-500 hover:text-violet-500 dark:text-gray-400 dark:hover:text-gray-200 transition duration-150">Hoàn Thành</NavLink>
+                            <NavLink to="" className="block text-sm font-medium text-gray-500 hover:text-violet-500 dark:text-gray-400 dark:hover:text-gray-200 transition duration-150">Chi tiết công việc</NavLink>
                           </li>
                         </ul>
                       </div>

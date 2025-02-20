@@ -105,17 +105,17 @@ function Dashboard() {
         <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         <main className="grow">
           <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
-            <div className="sm:flex sm:justify-between sm:items-center mb-8">
+            <div className="sm:flex sm:justify-between sm:items-center mb-3">
               <h1 className="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Danh Sách Công Việc</h1>
               <button onClick={handleThemeToggle} className="text-gray-800 dark:text-gray-100 p-2 rounded-full">
                 {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
               </button>
             </div>
-            <div className="mb-8">
-              <input type="text" value={newTask.title} onChange={(e) => setNewTask({ ...newTask, title: e.target.value })} placeholder="Tiêu đề công việc" className="px-4 py-2 border border-gray-300 rounded-md w-full mb-2" />
-              <textarea value={newTask.description} onChange={(e) => setNewTask({ ...newTask, description: e.target.value })} placeholder="Mô tả công việc" className="px-4 py-2 border border-gray-300 rounded-md w-full mb-2" />
-              <input type="date" value={newTask.dueDate} onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })} className="px-4 py-2 border border-gray-300 rounded-md w-full mb-2" />
-              <select value={newTask.status} onChange={(e) => setNewTask({ ...newTask, status: e.target.value })} className="px-4 py-2 border border-gray-300 rounded-md w-full mb-2">
+            <div className="mb-3">
+              <input type="text" value={newTask.title} onChange={(e) => setNewTask({ ...newTask, title: e.target.value })} placeholder="Tiêu đề công việc" className="px-4 py-2 border border-gray-300 rounded-md w-full mb-3" />
+              <textarea value={newTask.description} onChange={(e) => setNewTask({ ...newTask, description: e.target.value })} placeholder="Mô tả công việc" className="px-4 py-2 border border-gray-300 rounded-md w-full mb-3" />
+              <input type="date" value={newTask.dueDate} onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })} className="px-4 py-2 border border-gray-300 rounded-md w-full mb-3" />
+              <select value={newTask.status} onChange={(e) => setNewTask({ ...newTask, status: e.target.value })} className="px-4 py-2 border border-gray-300 rounded-md w-full mb-3">
                 <option value="Chưa làm">Chưa làm</option>
                 <option value="Đang làm">Đang làm</option>
                 <option value="Hoàn thành">Hoàn thành</option>
@@ -124,7 +124,7 @@ function Dashboard() {
                   {editingTaskId ? 'Cập nhật' : 'Thêm công việc'}
               </button>
             </div>
-            <div className="mb-4">
+            <div className="mb-3">
             <input
               type="text"
               placeholder="Tìm kiếm theo tiêu đề, mô tả, trạng thái..."
@@ -133,46 +133,42 @@ function Dashboard() {
               className="px-4 py-2 border border-gray-300 rounded-md w-full"
             />
             </div>
+            <div className="overflow-x-auto bg-white shadow rounded-lg mb-3"> 
+  <table className="min-w-full bg-white border border-gray-200">
+    <thead>
+      <tr className="bg-gray-100 text-left text-sm text-gray-700">
+        <th className="px-6 py-3">Tiêu đề</th>
+        <th className="px-6 py-3">Mô tả</th>
+        <th className="px-6 py-3">Trạng thái</th>
+        <th className="px-6 py-3">Ngày tạo</th>
+        <th className="px-6 py-3">Hạn chót</th>
+        <th className="px-6 py-3">Cập nhật gần nhất</th>
+        <th className="px-6 py-3 text-center">Hành động</th>
+      </tr>
+    </thead>
+    <tbody>
+      {filteredTasks.map(task => (
+        <tr key={task.id} className="border-b hover:bg-gray-50">
+          <td className="px-6 py-4">
+            <Link to={`/task/${task.id}`} className="text-blue-500 underline">{task.title}</Link>
+          </td>
+          <td className="px-6 py-4">{task.description}</td>
+          <td className={`px-6 py-4 font-semibold ${task.status === 'Hoàn thành' ? 'text-green-500' : task.status === 'Đang làm' ? 'text-yellow-500' : 'text-red-500'}`}>{task.status}</td>
+          <td className="px-6 py-4">{task.createdAt ? new Date(task.createdAt).toLocaleString() : 'N/A'}</td>
+          <td className="px-6 py-4">{task.dueDate || 'Chưa đặt'}</td>
+          <td className="px-6 py-4">{task.updatedAt ? new Date(task.updatedAt).toLocaleString() : 'N/A'}</td>
+          <td className="px-6 py-4 text-center flex gap-2 justify-center">
+            <button onClick={() => handleEditTask(task.id)} className="text-blue-500 hover:text-blue-700"><Edit size={20} /></button>
+            <button onClick={() => handleCompleteTask(task.id)} className="text-green-500 hover:text-green-700"><CheckCircle size={20} /></button>
+            <button onClick={() => handleDeleteTask(task.id)} className="text-red-500 hover:text-red-700"><Trash2 size={20} /></button>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
             <div className="overflow-x-auto bg-white shadow rounded-lg">
-              <table className="min-w-full bg-white border border-gray-200">
-                <thead>
-                  <tr className="bg-gray-100 text-left text-sm text-gray-700">
-                    <th className="px-6 py-3">Tiêu đề</th>
-                    <th className="px-6 py-3">Mô tả</th>
-                    <th className="px-6 py-3">Trạng thái</th>
-                    <th className="px-6 py-3">Ngày tạo</th>
-                    <th className="px-6 py-3">Hạn chót</th>
-                    <th className="px-6 py-3">Cập nhật gần nhất</th>
-                    <th className="px-6 py-3 text-center">Hành động</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredTasks.map(task => (
-                    <tr key={task.id} className="border-b hover:bg-gray-50">
-                      <td className="px-6 py-4"><Link to={`/task/${task.id}`} className="text-blue-500 underline">{task.title}</Link></td>
-                      <td className="px-6 py-4">{task.description}</td>
-                      <td className={`px-6 py-4 font-semibold ${task.status === 'Hoàn thành' ? 'text-green-500' : task.status === 'Đang làm' ? 'text-yellow-500' : 'text-red-500'}`}>{task.status}</td>
-                      <td className="px-6 py-4">{task.createdAt ? new Date(task.createdAt).toLocaleString() : 'N/A'}</td>
-                      <td className="px-6 py-4">{task.dueDate || 'Chưa đặt'}</td>
-                      <td className="px-6 py-4">{task.updatedAt ? new Date(task.updatedAt).toLocaleString() : 'N/A'}</td>
-                      <td className="px-6 py-4 text-center flex gap-2 justify-center">
-                        <button onClick={() => handleEditTask(task.id)} className="text-blue-500 hover:text-blue-700">
-                        <Edit size={20} />
-                        </button>
-                        <button onClick={() => handleCompleteTask(task.id)} className="text-green-500 hover:text-green-700">
-                        <CheckCircle size={20} />
-                        </button>
-                        <button onClick={() => handleDeleteTask(task.id)} className="text-red-500 hover:text-red-700">
-                        <Trash2 size={20} />
-                        </button>
-                        </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <div className="overflow-x-auto bg-white shadow rounded-lg">
-              <h2 className="text-xl font-semibold text-gray-700 dark:text-dark-100 mb-4">Thống kê công việc</h2>
+              <h2 className="text-xl font-semibold text-gray-700 dark:text-dark-100 mb-3">Thống kê công việc</h2>
               <table className="min-w-full border border-gray-300">
                 <thead>
                   <tr className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
