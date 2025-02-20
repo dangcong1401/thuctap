@@ -46,31 +46,27 @@ function Statistics() {
   const handleSaveEdit = () => {
     if (!editingTask) return;
   
-    console.log("Editing Task:", editingTask); // Kiểm tra dữ liệu đầu vào
-  
     setTasks((prevTasks) => {
       const updatedTasks = prevTasks.map((task) =>
         task.id === editingTask.id
-          ? { ...task, title: editingTask.title, description: editingTask.description, status: editingTask.status, updatedAt: new Date().toISOString() }
+          ? {
+              ...task,
+              title: editingTask.title,
+              description: editingTask.description,
+              status: editingTask.status,
+              updatedAt: new Date().toISOString(), // Cập nhật thời gian chỉnh sửa
+            }
           : task
       );
   
-      console.log("Updated Tasks:", updatedTasks); // Kiểm tra danh sách sau khi cập nhật
-  
-      localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+      localStorage.setItem("tasks", JSON.stringify(updatedTasks)); // Lưu vào localStorage
       return updatedTasks;
     });
   
     setEditingTask(null); // Đóng modal chỉnh sửa
   };
   
-
-  useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-    updateTaskStats(tasks);
-  }, [tasks]);
   
-
   const handleCompleteTask = useCallback((taskId) => {
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
@@ -182,28 +178,37 @@ function Statistics() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredTasks.map((task) => (
-                    <tr key={task.id} className="border-b hover:bg-gray-50">
-                      <td className="px-6 py-4">
-                        <Link to={`/task/${task.id}`} className="text-blue-500 underline">
-                          {task.title}
-                        </Link>
-                      </td>
-                      <td className="px-6 py-4">{task.description}</td>
-                      <td className={`px-6 py-4 font-semibold ${statusStyles[task.status] || "text-gray-500"}`}>
-                        {task.status}
-                      </td>
-                      <td className="px-6 py-4">{new Date(task.createdAt || Date.now()).toLocaleDateString()}</td>
-                      <td className="px-6 py-4">{task.dueDate || "Chưa đặt"}</td>
-                      <td className="px-6 py-4">{task.updatedAt ? new Date(task.updatedAt).toLocaleString() : "N/A"}</td>
-                      <td className="px-6 py-4 text-center flex gap-2 justify-center">
-                      <button onClick={() => handleEditTask(task)} className="text-blue-500"><FaEdit size={20} /></button>
-                        <button onClick={() => handleCompleteTask(task.id)} className="text-green-500"><FaCheckCircle size={20} /></button>
-                        <button onClick={() => handleDeleteTask(task.id)} className="text-red-500"><FaTrash size={20} /></button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
+                    {filteredTasks.length > 0 ? (
+                      filteredTasks.map((task) => (
+                        <tr key={task.id} className="border-b hover:bg-gray-50">
+                          <td className="px-6 py-4">
+                            <Link to={`/task/${task.id}`} className="text-blue-500 underline">
+                              {task.title}
+                            </Link>
+                          </td>
+                          <td className="px-6 py-4">{task.description}</td>
+                          <td className={`px-6 py-4 font-semibold ${statusStyles[task.status] || "text-gray-500"}`}>
+                            {task.status}
+                          </td>
+                          <td className="px-6 py-4">{new Date(task.createdAt || Date.now()).toLocaleDateString()}</td>
+                          <td className="px-6 py-4">{task.dueDate? new Date(task.dueDate).toLocaleDateString("vi-VN"): "Chưa đặt"}</td>
+                          <td className="px-6 py-4">{task.updatedAt ? new Date(task.updatedAt).toLocaleString() : "N/A"}</td>
+                          <td className="px-6 py-4 text-center flex gap-2 justify-center">
+                            <button onClick={() => handleEditTask(task)} className="text-blue-500"><FaEdit size={20} /></button>
+                            <button onClick={() => handleCompleteTask(task.id)} className="text-green-500"><FaCheckCircle size={20} /></button>
+                            <button onClick={() => handleDeleteTask(task.id)} className="text-red-500"><FaTrash size={20} /></button>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="7" className="text-center py-4 text-gray-500">
+                          Không có công việc nào phù hợp với tìm kiếm của bạn.
+                        </td>
+                      </tr>
+                    )}
+                 </tbody>
+
               </table>
             </div>
             {editingTask && (
