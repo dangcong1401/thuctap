@@ -124,29 +124,29 @@ function Dashboard() {
                   {editingTaskId ? 'Cập nhật' : 'Thêm công việc'}
               </button>
             </div>
-              {/* Thanh tìm kiếm và bộ lọc */}
-              <div className="mb-3 flex flex-col md:flex-row gap-3">
-                {/* Tìm kiếm theo tiêu đề và mô tả */}
-                <input
-                  type="text"
-                  placeholder="Tìm kiếm theo tiêu đề hoặc mô tả..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="px-4 py-2 border border-gray-300 rounded-md w-full md:w-2/3"
-                />
+            {/* Thanh tìm kiếm và bộ lọc */}
+            <div className="mb-3 flex flex-col md:flex-row gap-3">
+              {/* Tìm kiếm theo tiêu đề và mô tả */}
+              <input
+                type="text"
+                placeholder="Tìm kiếm theo tiêu đề hoặc mô tả..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="px-4 py-2 border border-gray-300 rounded-md w-full md:w-2/3"
+              />
 
-                {/* Bộ lọc trạng thái */}
-                <select
-                  value={filter}
-                  onChange={(e) => setFilter(e.target.value)}
-                  className="px-4 py-2 border border-gray-300 rounded-md w-full md:w-1/3"
-                >
-                  <option value="Tất cả">Tất cả trạng thái</option>
-                  <option value="Chưa làm">Chưa làm</option>
-                  <option value="Đang làm">Đang làm</option>
-                  <option value="Hoàn thành">Hoàn thành</option>
-                </select>
-              </div>
+              {/* Bộ lọc trạng thái */}
+              <select
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
+                className="px-4 py-2 border border-gray-300 rounded-md w-full md:w-1/3"
+              >
+                <option value="Tất cả">Tất cả trạng thái</option>
+                <option value="Chưa làm">Chưa làm</option>
+                <option value="Đang làm">Đang làm</option>
+                <option value="Hoàn thành">Hoàn thành</option>
+              </select>
+            </div>
 
             <div className="overflow-x-auto bg-white shadow rounded-lg mb-3"> 
   <table className="min-w-full bg-white border border-gray-200">
@@ -182,27 +182,6 @@ function Dashboard() {
     </tbody>
   </table>
 </div>
-            <div className="overflow-x-auto bg-white shadow rounded-lg">
-              <h2 className="text-xl font-semibold text-gray-700 dark:text-dark-100 mb-3">Thống kê công việc</h2>
-              <table className="min-w-full border border-gray-300">
-                <thead>
-                  <tr className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
-                    <th className="px-4 py-2 border">Tổng số công việc</th>
-                    <th className="px-4 py-2 border">Đã hoàn thành</th>
-                    <th className="px-4 py-2 border">Đang làm</th>
-                    <th className="px-4 py-2 border">Chưa làm</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="text-center">
-                    <td className="px-4 py-2 border">{taskStats.total}</td>
-                    <td className="px-4 py-2 border text-green-500">{taskStats.completed}</td>
-                    <td className="px-4 py-2 border text-yellow-500">{taskStats.inProgress}</td>
-                    <td className="px-4 py-2 border text-red-500">{taskStats.notStarted}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
           </div>
         </main>
       </div>

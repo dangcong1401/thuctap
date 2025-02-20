@@ -10,7 +10,8 @@ import './charts/ChartjsConfig';
 
 // Import pages
 import Dashboard from './pages/Dashboard';
-import Statistics from './pages/Statistics'; // Import trang thống kê
+import Statistics from './pages/Statistics';
+import TaskDetail from "./pages/TaskDetail";
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Dashboard />} />
         <Route exact path="/statistics" element={<Statistics />} /> {/* Thêm route mới */}
+        <Route path="/task/:id" element={<TaskDetail />} />
       </Routes>
     </>
   );
