@@ -6,6 +6,7 @@ import Header from "../partials/Header";
 import Swal from "sweetalert2";
 
 function Statistics() {
+  const [editingTask, setEditingTask] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -38,9 +39,37 @@ function Statistics() {
     setTaskStats(stats);
   };
 
-  const handleEditTask = (taskId) => {
-    navigate(`/dashboard?editTask=${taskId}`);
+  const handleEditTask = (task) => {
+    setEditingTask({ ...task });
   };
+  
+  const handleSaveEdit = () => {
+    if (!editingTask) return;
+  
+    console.log("Editing Task:", editingTask); // Kiểm tra dữ liệu đầu vào
+  
+    setTasks((prevTasks) => {
+      const updatedTasks = prevTasks.map((task) =>
+        task.id === editingTask.id
+          ? { ...task, title: editingTask.title, description: editingTask.description, status: editingTask.status, updatedAt: new Date().toISOString() }
+          : task
+      );
+  
+      console.log("Updated Tasks:", updatedTasks); // Kiểm tra danh sách sau khi cập nhật
+  
+      localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+      return updatedTasks;
+    });
+  
+    setEditingTask(null); // Đóng modal chỉnh sửa
+  };
+  
+
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    updateTaskStats(tasks);
+  }, [tasks]);
+  
 
   const handleCompleteTask = useCallback((taskId) => {
     setTasks((prevTasks) =>
@@ -168,7 +197,7 @@ function Statistics() {
                       <td className="px-6 py-4">{task.dueDate || "Chưa đặt"}</td>
                       <td className="px-6 py-4">{task.updatedAt ? new Date(task.updatedAt).toLocaleString() : "N/A"}</td>
                       <td className="px-6 py-4 text-center flex gap-2 justify-center">
-                        <button onClick={() => handleEditTask(task.id)} className="text-blue-500"><FaEdit size={20} /></button>
+                      <button onClick={() => handleEditTask(task)} className="text-blue-500"><FaEdit size={20} /></button>
                         <button onClick={() => handleCompleteTask(task.id)} className="text-green-500"><FaCheckCircle size={20} /></button>
                         <button onClick={() => handleDeleteTask(task.id)} className="text-red-500"><FaTrash size={20} /></button>
                       </td>
@@ -177,7 +206,47 @@ function Statistics() {
                 </tbody>
               </table>
             </div>
-
+            {editingTask && (
+                <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+                    <h2 className="text-lg font-bold mb-4">Chỉnh Sửa Công Việc</h2>
+                    <input 
+                        type="text" 
+                        className="border p-2 w-full mb-3" 
+                        value={editingTask.title} 
+                        onChange={(e) => setEditingTask({...editingTask, title: e.target.value})} 
+                    />
+                    <textarea 
+                        className="border p-2 w-full mb-3" 
+                        value={editingTask.description} 
+                        onChange={(e) => setEditingTask({...editingTask, description: e.target.value})} 
+                    />
+                    <select 
+                        className="border p-2 w-full mb-3" 
+                        value={editingTask.status} 
+                        onChange={(e) => setEditingTask({...editingTask, status: e.target.value})}
+                    >
+                        <option value="Chưa làm">Chưa làm</option>
+                        <option value="Đang làm">Đang làm</option>
+                        <option value="Hoàn thành">Hoàn thành</option>
+                    </select>
+                    <div className="flex justify-end gap-2">
+                        <button 
+                        onClick={() => setEditingTask(null)} 
+                        className="px-4 py-2 bg-gray-400 text-white rounded-md"
+                        >
+                        Hủy
+                        </button>
+                        <button 
+                        onClick={() => handleSaveEdit()} 
+                        className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                        >
+                        Lưu
+                        </button>
+                    </div>
+                    </div>
+                </div>
+                )}
           </div>
         </main>
       </div>

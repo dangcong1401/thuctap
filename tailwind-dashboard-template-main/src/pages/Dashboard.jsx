@@ -124,9 +124,8 @@ function Dashboard() {
                   {editingTaskId ? 'Cập nhật' : 'Thêm công việc'}
               </button>
             </div>
-            {/* Thanh tìm kiếm và bộ lọc */}
-            <div className="mb-3 flex flex-col md:flex-row gap-3">
-              {/* Tìm kiếm theo tiêu đề và mô tả */}
+
+            {/* <div className="mb-3 flex flex-col md:flex-row gap-3">
               <input
                 type="text"
                 placeholder="Tìm kiếm theo tiêu đề hoặc mô tả..."
@@ -134,8 +133,6 @@ function Dashboard() {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="px-4 py-2 border border-gray-300 rounded-md w-full md:w-2/3"
               />
-
-              {/* Bộ lọc trạng thái */}
               <select
                 value={filter}
                 onChange={(e) => setFilter(e.target.value)}
@@ -146,42 +143,42 @@ function Dashboard() {
                 <option value="Đang làm">Đang làm</option>
                 <option value="Hoàn thành">Hoàn thành</option>
               </select>
-            </div>
+            </div> */}
 
-            <div className="overflow-x-auto bg-white shadow rounded-lg mb-3"> 
-  <table className="min-w-full bg-white border border-gray-200">
-    <thead>
-      <tr className="bg-gray-100 text-left text-sm text-gray-700">
-        <th className="px-6 py-3">Tiêu đề</th>
-        <th className="px-6 py-3">Mô tả</th>
-        <th className="px-6 py-3">Trạng thái</th>
-        <th className="px-6 py-3">Ngày tạo</th>
-        <th className="px-6 py-3">Hạn chót</th>
-        <th className="px-6 py-3">Cập nhật gần nhất</th>
-        <th className="px-6 py-3 text-center">Hành động</th>
-      </tr>
-    </thead>
-    <tbody>
-      {filteredTasks.map(task => (
-        <tr key={task.id} className="border-b hover:bg-gray-50">
-          <td className="px-6 py-4">
-            <Link to={`/task/${task.id}`} className="text-blue-500 underline">{task.title}</Link>
-          </td>
-          <td className="px-6 py-4">{task.description}</td>
-          <td className={`px-6 py-4 font-semibold ${task.status === 'Hoàn thành' ? 'text-green-500' : task.status === 'Đang làm' ? 'text-yellow-500' : 'text-red-500'}`}>{task.status}</td>
-          <td className="px-6 py-4">{task.createdAt ? new Date(task.createdAt).toLocaleString() : 'N/A'}</td>
-          <td className="px-6 py-4">{task.dueDate || 'Chưa đặt'}</td>
-          <td className="px-6 py-4">{task.updatedAt ? new Date(task.updatedAt).toLocaleString() : 'N/A'}</td>
-          <td className="px-6 py-4 text-center flex gap-2 justify-center">
-            <button onClick={() => handleEditTask(task.id)} className="text-blue-500 hover:text-blue-700"><Edit size={20} /></button>
-            <button onClick={() => handleCompleteTask(task.id)} className="text-green-500 hover:text-green-700"><CheckCircle size={20} /></button>
-            <button onClick={() => handleDeleteTask(task.id)} className="text-red-500 hover:text-red-700"><Trash2 size={20} /></button>
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-</div>
+            {/* <div className="overflow-x-auto bg-white shadow rounded-lg mb-3"> 
+                <table className="min-w-full bg-white border border-gray-200">
+                  <thead>
+                    <tr className="bg-gray-100 text-left text-sm text-gray-700">
+                      <th className="px-6 py-3">Tiêu đề</th>
+                      <th className="px-6 py-3">Mô tả</th>
+                      <th className="px-6 py-3">Trạng thái</th>
+                      <th className="px-6 py-3">Ngày tạo</th>
+                      <th className="px-6 py-3">Hạn chót</th>
+                      <th className="px-6 py-3">Cập nhật gần nhất</th>
+                      <th className="px-6 py-3 text-center">Hành động</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredTasks.map(task => (
+                      <tr key={task.id} className="border-b hover:bg-gray-50">
+                        <td className="px-6 py-4">
+                          <Link to={`/task/${task.id}`} className="text-blue-500 underline">{task.title}</Link>
+                        </td>
+                        <td className="px-6 py-4">{task.description}</td>
+                        <td className={`px-6 py-4 font-semibold ${task.status === 'Hoàn thành' ? 'text-green-500' : task.status === 'Đang làm' ? 'text-yellow-500' : 'text-red-500'}`}>{task.status}</td>
+                        <td className="px-6 py-4">{task.createdAt ? new Date(task.createdAt).toLocaleString() : 'N/A'}</td>
+                        <td className="px-6 py-4">{task.dueDate || 'Chưa đặt'}</td>
+                        <td className="px-6 py-4">{task.updatedAt ? new Date(task.updatedAt).toLocaleString() : 'N/A'}</td>
+                        <td className="px-6 py-4 text-center flex gap-2 justify-center">
+                          <button onClick={() => handleEditTask(task.id)} className="text-blue-500 hover:text-blue-700"><Edit size={20} /></button>
+                          <button onClick={() => handleCompleteTask(task.id)} className="text-green-500 hover:text-green-700"><CheckCircle size={20} /></button>
+                          <button onClick={() => handleDeleteTask(task.id)} className="text-red-500 hover:text-red-700"><Trash2 size={20} /></button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div> */}
           </div>
         </main>
       </div>
