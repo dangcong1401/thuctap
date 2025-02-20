@@ -14,8 +14,10 @@ function Sidebar({
   const trigger = useRef(null);
   const sidebar = useRef(null);
 
-  const storedSidebarExpanded = localStorage.getItem("sidebar-expanded");
-  const [sidebarExpanded, setSidebarExpanded] = useState(storedSidebarExpanded === null ? false : storedSidebarExpanded === "true");
+  const [sidebarExpanded, setSidebarExpanded] = useState(() => {
+    return JSON.parse(localStorage.getItem("sidebar-expanded")) ?? false;
+  });
+  
 
   // close on click outside
   useEffect(() => {
@@ -24,9 +26,10 @@ function Sidebar({
       if (!sidebarOpen || sidebar.current.contains(target) || trigger.current.contains(target)) return;
       setSidebarOpen(false);
     };
-    document.addEventListener("click", clickHandler);
+    if (sidebarOpen) document.addEventListener("click", clickHandler);
     return () => document.removeEventListener("click", clickHandler);
-  });
+  }, [sidebarOpen]); // Chỉ chạy lại khi `sidebarOpen` thay đổi
+  
 
   // close if the esc key is pressed
   useEffect(() => {
@@ -90,7 +93,6 @@ function Sidebar({
           <div>
             <h3 className="text-xs uppercase text-gray-400 dark:text-gray-500 font-semibold pl-3">
               <span className="hidden lg:block lg:sidebar-expanded:hidden 2xl:hidden text-center w-6" aria-hidden="true">•••</span>
-              <span className="lg:hidden lg:sidebar-expanded:block 2xl:block">Pages</span>
             </h3>
             <ul className="mt-3 space-y-4">
               {/* Dashboard */}
@@ -126,7 +128,7 @@ function Sidebar({
                         <ul className={`pl-8 mt-1 ${!open && "hidden"}`}>
                           {/* List of tasks */}
                           <li className="mb-1">
-                            <NavLink to="" className="block text-sm font-medium text-gray-500 hover:text-violet-500 dark:text-gray-400 dark:hover:text-gray-200 transition duration-150">Chi tiết công việc</NavLink>
+                          <NavLink to="/statistics" className="block text-sm font-medium text-gray-500 hover:text-violet-500 dark:text-gray-400 dark:hover:text-gray-200 transition duration-150">Thống kê công việc</NavLink>
                           </li>
                         </ul>
                       </div>

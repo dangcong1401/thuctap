@@ -80,12 +80,12 @@ function Dashboard() {
 
   useEffect(() => {
     setFilteredTasks(tasks.filter(task =>
-      (filter === 'Tất cả' || task.status === filter) &&
+      (filter === 'Tất cả' || task.status === filter) && 
       (task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-       task.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-       task.status.toLowerCase().includes(searchTerm.toLowerCase())) 
+       task.description.toLowerCase().includes(searchTerm.toLowerCase()))
     ));
   }, [tasks, filter, searchTerm]);
+  
 
   useEffect(() => {
     const total = tasks.length;
@@ -124,15 +124,30 @@ function Dashboard() {
                   {editingTaskId ? 'Cập nhật' : 'Thêm công việc'}
               </button>
             </div>
-            <div className="mb-3">
-            <input
-              type="text"
-              placeholder="Tìm kiếm theo tiêu đề, mô tả, trạng thái..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-md w-full"
-            />
-            </div>
+              {/* Thanh tìm kiếm và bộ lọc */}
+              <div className="mb-3 flex flex-col md:flex-row gap-3">
+                {/* Tìm kiếm theo tiêu đề và mô tả */}
+                <input
+                  type="text"
+                  placeholder="Tìm kiếm theo tiêu đề hoặc mô tả..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="px-4 py-2 border border-gray-300 rounded-md w-full md:w-2/3"
+                />
+
+                {/* Bộ lọc trạng thái */}
+                <select
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
+                  className="px-4 py-2 border border-gray-300 rounded-md w-full md:w-1/3"
+                >
+                  <option value="Tất cả">Tất cả trạng thái</option>
+                  <option value="Chưa làm">Chưa làm</option>
+                  <option value="Đang làm">Đang làm</option>
+                  <option value="Hoàn thành">Hoàn thành</option>
+                </select>
+              </div>
+
             <div className="overflow-x-auto bg-white shadow rounded-lg mb-3"> 
   <table className="min-w-full bg-white border border-gray-200">
     <thead>
