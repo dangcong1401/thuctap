@@ -111,148 +111,138 @@ function Statistics() {
 
   return (
     <div className="flex h-screen overflow-hidden">
+      {/* Sidebar */}
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-      <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+      
+      {/* Main Content */}
+      <div className="relative flex flex-col flex-1 overflow-y-auto">
         <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-        <main className="grow">
-          <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
-            <h1 className="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold mb-6">
-              Thống Kê Công Việc
-            </h1>
+        
+        <main className="grow px-6 py-8 w-full max-w-7xl mx-auto">
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6">
+             Thống Kê Công Việc📊
+          </h1>
 
-            {/* Thanh tìm kiếm */}
-            <div className="flex flex-col md:flex-row gap-4 mb-6">
-              <input
-                type="text"
-                placeholder="Tìm kiếm theo tiêu đề hoặc mô tả..."
-                className="border border-gray-300 rounded-lg px-4 py-2 w-full md:w-1/2"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <select
-                className="border border-gray-300 rounded-lg px-4 py-2 w-full md:w-1/4"
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-              >
-                <option value="">Tất cả trạng thái</option>
-                <option value="Hoàn thành">Hoàn thành</option>
-                <option value="Đang làm">Đang làm</option>
-                <option value="Chưa làm">Chưa làm</option>
-              </select>
-            </div>
-
-            {/* Bảng thống kê */}
-            <div className="overflow-x-auto bg-white shadow rounded-lg mb-6">
-              <table className="min-w-full border border-gray-200">
-                <thead>
-                  <tr className="bg-gray-100 text-left text-sm text-gray-700">
-                    <th className="px-6 py-3">Tổng số công việc</th>
-                    <th className="px-6 py-3">Đã hoàn thành</th>
-                    <th className="px-6 py-3">Đang làm</th>
-                    <th className="px-6 py-3">Chưa làm</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="text-center">
-                    <td className="px-6 py-4 border">{taskStats.total}</td>
-                    <td className="px-6 py-4 border text-green-500">{taskStats.completed}</td>
-                    <td className="px-6 py-4 border text-yellow-500">{taskStats.inProgress}</td>
-                    <td className="px-6 py-4 border text-red-500">{taskStats.notStarted}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            {/* Bảng danh sách công việc */}
-            <div className="overflow-x-auto bg-white shadow rounded-lg mb-3">
-              <table className="min-w-full bg-white border border-gray-200">
-                <thead>
-                  <tr className="bg-gray-100 text-left text-sm text-gray-700">
-                    <th className="px-6 py-3">Tiêu đề</th>
-                    <th className="px-6 py-3">Mô tả</th>
-                    <th className="px-6 py-3">Trạng thái</th>
-                    <th className="px-6 py-3">Ngày tạo</th>
-                    <th className="px-6 py-3">Hạn chót</th>
-                    <th className="px-6 py-3">Cập nhật gần nhất</th>
-                    <th className="px-6 py-3 text-center">Hành động</th>
-                  </tr>
-                </thead>
-                <tbody>
-                    {filteredTasks.length > 0 ? (
-                      filteredTasks.map((task) => (
-                        <tr key={task.id} className="border-b hover:bg-gray-50">
-                          <td className="px-6 py-4">
-                            <Link to={`/task/${task.id}`} className="text-blue-500 underline">
-                              {task.title}
-                            </Link>
-                          </td>
-                          <td className="px-6 py-4">{task.description}</td>
-                          <td className={`px-6 py-4 font-semibold ${statusStyles[task.status] || "text-gray-500"}`}>
-                            {task.status}
-                          </td>
-                          <td className="px-6 py-4">{new Date(task.createdAt || Date.now()).toLocaleDateString()}</td>
-                          <td className="px-6 py-4">{task.dueDate? new Date(task.dueDate).toLocaleDateString("vi-VN"): "Chưa đặt"}</td>
-                          <td className="px-6 py-4">{task.updatedAt ? new Date(task.updatedAt).toLocaleString() : "N/A"}</td>
-                          <td className="px-6 py-4 text-center flex gap-2 justify-center">
-                            <button onClick={() => handleEditTask(task)} className="text-blue-500"><FaEdit size={20} /></button>
-                            <button onClick={() => handleCompleteTask(task.id)} className="text-green-500"><FaCheckCircle size={20} /></button>
-                            <button onClick={() => handleDeleteTask(task.id)} className="text-red-500"><FaTrash size={20} /></button>
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan="7" className="text-center py-4 text-gray-500">
-                          Không có công việc nào phù hợp với tìm kiếm của bạn.
-                        </td>
-                      </tr>
-                    )}
-                 </tbody>
-
-              </table>
-            </div>
-            {editingTask && (
-                <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-                    <h2 className="text-lg font-bold mb-4">Chỉnh Sửa Công Việc</h2>
-                    <input 
-                        type="text" 
-                        className="border p-2 w-full mb-3" 
-                        value={editingTask.title} 
-                        onChange={(e) => setEditingTask({...editingTask, title: e.target.value})} 
-                    />
-                    <textarea 
-                        className="border p-2 w-full mb-3" 
-                        value={editingTask.description} 
-                        onChange={(e) => setEditingTask({...editingTask, description: e.target.value})} 
-                    />
-                    <select 
-                        className="border p-2 w-full mb-3" 
-                        value={editingTask.status} 
-                        onChange={(e) => setEditingTask({...editingTask, status: e.target.value})}
-                    >
-                        <option value="Chưa làm">Chưa làm</option>
-                        <option value="Đang làm">Đang làm</option>
-                        <option value="Hoàn thành">Hoàn thành</option>
-                    </select>
-                    <div className="flex justify-end gap-2">
-                        <button 
-                        onClick={() => setEditingTask(null)} 
-                        className="px-4 py-2 bg-gray-400 text-white rounded-md"
-                        >
-                        Hủy
-                        </button>
-                        <button 
-                        onClick={() => handleSaveEdit()} 
-                        className="px-4 py-2 bg-blue-500 text-white rounded-md"
-                        >
-                        Lưu
-                        </button>
-                    </div>
-                    </div>
-                </div>
-                )}
+          {/* Bộ lọc tìm kiếm */}
+          <div className="flex flex-col md:flex-row gap-4 mb-6">
+            <input
+              type="text"
+              placeholder="🔍 Tìm kiếm công việc..."
+              className="border border-gray-300 rounded-lg px-4 py-2 w-full md:w-1/2 focus:ring-2 focus:ring-blue-500"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <select
+              className="border border-gray-300 rounded-lg px-4 py-2 w-full md:w-1/4 focus:ring-2 focus:ring-blue-500"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+            >
+              <option value="">🔄 Tất cả trạng thái</option>
+              <option value="Hoàn thành">✅ Hoàn thành</option>
+              <option value="Đang làm">⏳ Đang làm</option>
+              <option value="Chưa làm">❌ Chưa làm</option>
+            </select>
           </div>
+
+          {/* Cards thống kê */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            {[
+              { label: "Tổng số công việc", value: taskStats.total, color: "bg-gray-500" },
+              { label: "Đã hoàn thành", value: taskStats.completed, color: "bg-green-500" },
+              { label: "Đang làm", value: taskStats.inProgress, color: "bg-yellow-500" },
+              { label: "Chưa làm", value: taskStats.notStarted, color: "bg-red-500" },
+            ].map((stat, index) => (
+              <div key={index} className={`p-4 rounded-lg text-white shadow-md ${stat.color}`}>
+                <h3 className="text-lg font-semibold">{stat.label}</h3>
+                <p className="text-2xl font-bold">{stat.value}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Danh sách công việc */}
+          <div className="bg-white shadow rounded-lg overflow-hidden">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="bg-gray-200 text-gray-700">
+                  {["Tiêu đề", "Mô tả", "Trạng thái", "Ngày tạo", "Hạn chót", "Cập nhật", "Hành động"].map(
+                    (header, index) => (
+                      <th key={index} className="px-6 py-3 text-sm">{header}</th>
+                    )
+                  )}
+                </tr>
+              </thead>
+              <tbody>
+                {filteredTasks.length > 0 ? (
+                  filteredTasks.map((task) => (
+                    <tr key={task.id} className="border-b hover:bg-gray-100">
+                      <td className="px-6 py-4">
+                        <Link to={`/task/${task.id}`} className="text-blue-600 hover:underline font-medium">
+                          {task.title}
+                        </Link>
+                      </td>
+                      <td className="px-6 py-4">{task.description}</td>
+                      <td className={`px-6 py-4 font-semibold ${statusStyles[task.status] || "text-gray-500"}`}>
+                        {task.status}
+                      </td>
+                      <td className="px-6 py-4">{new Date(task.createdAt || Date.now()).toLocaleDateString()}</td>
+                      <td className="px-6 py-4">{task.dueDate ? new Date(task.dueDate).toLocaleDateString("vi-VN") : "Chưa đặt"}</td>
+                      <td className="px-6 py-4">{task.updatedAt ? new Date(task.updatedAt).toLocaleString() : "N/A"}</td>
+                      <td className="px-6 py-4 text-center flex gap-2 justify-center">
+                        <button onClick={() => handleEditTask(task)} className="text-blue-500 hover:text-blue-700 transition">
+                          <FaEdit size={18} />
+                        </button>
+                        <button onClick={() => handleCompleteTask(task.id)} className="text-green-500 hover:text-green-700 transition">
+                          <FaCheckCircle size={18} />
+                        </button>
+                        <button onClick={() => handleDeleteTask(task.id)} className="text-red-500 hover:text-red-700 transition">
+                          <FaTrash size={18} />
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="7" className="text-center py-4 text-gray-500">
+                      Không có công việc nào phù hợp với tìm kiếm của bạn.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Modal chỉnh sửa */}
+          {editingTask && (
+            <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+              <div className="bg-white p-6 rounded-lg shadow-lg w-96 animate-fadeIn">
+                <h2 className="text-lg font-bold mb-4">📝 Chỉnh Sửa Công Việc</h2>
+                <input
+                  type="text"
+                  className="border p-2 w-full mb-3"
+                  value={editingTask.title}
+                  onChange={(e) => setEditingTask({ ...editingTask, title: e.target.value })}
+                />
+                <textarea
+                  className="border p-2 w-full mb-3"
+                  value={editingTask.description}
+                  onChange={(e) => setEditingTask({ ...editingTask, description: e.target.value })}
+                />
+                <select
+                  className="border p-2 w-full mb-3"
+                  value={editingTask.status}
+                  onChange={(e) => setEditingTask({ ...editingTask, status: e.target.value })}
+                >
+                  <option value="Chưa làm">❌ Chưa làm</option>
+                  <option value="Đang làm">⏳ Đang làm</option>
+                  <option value="Hoàn thành">✅ Hoàn thành</option>
+                </select>
+                <div className="flex justify-end gap-2">
+                  <button onClick={() => setEditingTask(null)} className="px-4 py-2 bg-gray-400 text-white rounded-md">Hủy</button>
+                  <button onClick={() => handleSaveEdit()} className="px-4 py-2 bg-blue-500 text-white rounded-md">Lưu</button>
+                </div>
+              </div>
+            </div>
+          )}
         </main>
       </div>
     </div>

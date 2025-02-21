@@ -30,10 +30,9 @@ function Dashboard() {
       toast.error('⚠️ Vui lòng nhập mô tả công việc!', { position: "top-right", autoClose: 2000 });
       return;
     }
-    
-    // Kiểm tra định dạng ngày theo nn/mm/yyyy
-    const datePattern = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/;
-    if (!datePattern.test(newTask.dueDate)) {
+  
+    // Kiểm tra định dạng ngày hợp lệ theo format yyyy-mm-dd
+    if (!newTask.dueDate || isNaN(new Date(newTask.dueDate).getTime())) {
       toast.error('⚠️ Ngày không hợp lệ!', { position: "top-right", autoClose: 2000 });
       return;
     }
@@ -41,7 +40,7 @@ function Dashboard() {
   
     const now = new Date().toISOString();
     if (editingTaskId) {
-      const updatedTasks = tasks.map(task => task.id === editingTaskId ? { ...newTask, updatedAt: now } : task);
+      const updatedTasks = tasks.map(task => task.id === editingTaskId ? { ...task, ...newTask, updatedAt: now } : task);
       setTasks(updatedTasks);
       setEditingTaskId(null);
       toast.success('✏️ Công việc đã được cập nhật!', { position: "top-right", autoClose: 2000 });
@@ -54,32 +53,57 @@ function Dashboard() {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-screen overflow-hidden bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
       <Sidebar />
       <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
         <Header />
         <main className="grow">
-          <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
-            <div className="sm:flex sm:justify-between sm:items-center mb-3">
-              <h1 className="text-2xl md:text-3xl text-dark green-800 font-bold">Danh Sách Công Việc</h1>
+          <div className="px-6 sm:px-8 lg:px-12 py-10 w-full max-w-5xl mx-auto">
+            {/* Tiêu đề */}
+            <div className="sm:flex sm:justify-between sm:items-center mb-6">
+              <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200">
+                Thêm Công Việc 📋
+              </h1>
             </div>
-            <div className="mb-3">
-              <input type="text" value={newTask.title} onChange={(e) => setNewTask({ ...newTask, title: e.target.value })} placeholder="Tiêu đề công việc" className="px-4 py-2 border border-gray-300 rounded-md w-full mb-3" />
-              <textarea value={newTask.description} onChange={(e) => setNewTask({ ...newTask, description: e.target.value })} placeholder="Mô tả công việc" className="px-4 py-2 border border-gray-300 rounded-md w-full mb-3" />
-              <input 
-                type="text" 
-                value={newTask.dueDate} 
-                onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })} 
-                placeholder="Nhập ngày (nn/mm/yyyy)" 
-                className="px-4 py-2 border border-gray-300 rounded-md w-full mb-3" 
+  
+            {/* Form thêm công việc */}
+            <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 space-y-4">
+              <input
+                type="text"
+                value={newTask.title}
+                onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
+                placeholder="Tiêu đề công việc"
+                className="px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg w-full bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
               />
-
-              <select value={newTask.status} onChange={(e) => setNewTask({ ...newTask, status: e.target.value })} className="px-4 py-2 border border-gray-300 rounded-md w-full mb-3">
+  
+              <textarea
+                value={newTask.description}
+                onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
+                placeholder="Mô tả công việc"
+                className="px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg w-full bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+              />
+  
+              <input
+                type="date"
+                value={newTask.dueDate}
+                onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })}
+                className="px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg w-full bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+              />
+  
+              <select
+                value={newTask.status}
+                onChange={(e) => setNewTask({ ...newTask, status: e.target.value })}
+                className="px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg w-full bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 transition focus:ring-2 focus:ring-blue-500"
+              >
                 <option value="Chưa làm">Chưa làm</option>
                 <option value="Đang làm">Đang làm</option>
                 <option value="Hoàn thành">Hoàn thành</option>
               </select>
-              <button onClick={handleAddOrUpdateTask} className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
+  
+              <button
+                onClick={handleAddOrUpdateTask}
+                className="w-full py-3 text-lg font-semibold bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition focus:ring-2 focus:ring-blue-500"
+              >
                 {editingTaskId ? 'Cập nhật' : 'Thêm công việc'}
               </button>
             </div>
@@ -89,6 +113,7 @@ function Dashboard() {
       <ToastContainer />
     </div>
   );
+  
 }
 
 export default Dashboard;
