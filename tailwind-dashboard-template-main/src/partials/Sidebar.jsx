@@ -96,7 +96,7 @@ function Sidebar({
             </h3>
             <ul className="mt-3 space-y-4">
               {/* Dashboard */}
-              <SidebarLinkGroup activecondition={pathname.startsWith("/statistics") || pathname.startsWith("/")}>
+              <SidebarLinkGroup activecondition={["/", "/dashboard", "/statistics"].includes(pathname)}>
                 {(handleClick, open) => {
                   return (
                     <React.Fragment>
@@ -127,6 +127,9 @@ function Sidebar({
                       <div className="lg:hidden lg:sidebar-expanded:block 2xl:block">
                         <ul className={`pl-8 mt-1 ${!open && "hidden"}`}>
                           {/* List of tasks */}
+                          <li className="mb-1">
+                          <NavLink to="/" className="block text-sm font-medium text-gray-500 hover:text-violet-500 dark:text-gray-400 dark:hover:text-gray-200 transition duration-150">Thêm công việc</NavLink>
+                          </li>
                           <li className="mb-1">
                           <NavLink to="/statistics" className="block text-sm font-medium text-gray-500 hover:text-violet-500 dark:text-gray-400 dark:hover:text-gray-200 transition duration-150">Thống kê công việc</NavLink>
                           </li>
