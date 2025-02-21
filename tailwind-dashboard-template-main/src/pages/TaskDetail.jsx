@@ -71,13 +71,6 @@ function TaskDetail() {
           <ArrowLeft size={18} />
           Quay lại
         </button>
-        <button
-          onClick={() => navigate(`/edit/${task.id}`)}
-          className="px-4 py-2 flex items-center gap-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition-all"
-        >
-          <Edit3 size={18} />
-          Chỉnh sửa
-        </button>
       </div>
     </div>
   );

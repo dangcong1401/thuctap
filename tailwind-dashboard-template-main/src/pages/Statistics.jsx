@@ -213,36 +213,67 @@ function Statistics() {
 
           {/* Modal chỉnh sửa */}
           {editingTask && (
-            <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
-              <div className="bg-white p-6 rounded-lg shadow-lg w-96 animate-fadeIn">
-                <h2 className="text-lg font-bold mb-4">📝 Chỉnh Sửa Công Việc</h2>
-                <input
-                  type="text"
-                  className="border p-2 w-full mb-3"
-                  value={editingTask.title}
-                  onChange={(e) => setEditingTask({ ...editingTask, title: e.target.value })}
-                />
-                <textarea
-                  className="border p-2 w-full mb-3"
-                  value={editingTask.description}
-                  onChange={(e) => setEditingTask({ ...editingTask, description: e.target.value })}
-                />
-                <select
-                  className="border p-2 w-full mb-3"
-                  value={editingTask.status}
-                  onChange={(e) => setEditingTask({ ...editingTask, status: e.target.value })}
-                >
-                  <option value="Chưa làm">❌ Chưa làm</option>
-                  <option value="Đang làm">⏳ Đang làm</option>
-                  <option value="Hoàn thành">✅ Hoàn thành</option>
-                </select>
-                <div className="flex justify-end gap-2">
-                  <button onClick={() => setEditingTask(null)} className="px-4 py-2 bg-gray-400 text-white rounded-md">Hủy</button>
-                  <button onClick={() => handleSaveEdit()} className="px-4 py-2 bg-blue-500 text-white rounded-md">Lưu</button>
-                </div>
-              </div>
-            </div>
-          )}
+  <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+    <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl w-[90%] sm:w-96 transform transition-all scale-95 animate-fadeIn">
+      <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+        📝 Chỉnh Sửa Công Việc
+      </h2>
+
+      {/* Input tiêu đề */}
+      <div className="mb-4">
+        <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-1">Tiêu đề</label>
+        <input
+          type="text"
+          className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          value={editingTask.title}
+          onChange={(e) => setEditingTask({ ...editingTask, title: e.target.value })}
+        />
+      </div>
+
+      {/* Textarea mô tả */}
+      <div className="mb-4">
+        <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-1">Mô tả</label>
+        <textarea
+          className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          rows="3"
+          value={editingTask.description}
+          onChange={(e) => setEditingTask({ ...editingTask, description: e.target.value })}
+        />
+      </div>
+
+      {/* Select trạng thái */}
+      <div className="mb-4">
+        <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-1">Trạng thái</label>
+        <select
+          className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          value={editingTask.status}
+          onChange={(e) => setEditingTask({ ...editingTask, status: e.target.value })}
+        >
+          <option value="Chưa làm">❌ Chưa làm</option>
+          <option value="Đang làm">⏳ Đang làm</option>
+          <option value="Hoàn thành">✅ Hoàn thành</option>
+        </select>
+      </div>
+
+      {/* Nút bấm */}
+      <div className="flex justify-end gap-2 mt-5">
+        <button
+          onClick={() => setEditingTask(null)}
+          className="px-4 py-2 bg-gray-400 hover:bg-gray-500 text-white rounded-lg transition"
+        >
+          Hủy
+        </button>
+        <button
+          onClick={() => handleSaveEdit()}
+          className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition shadow-md"
+        >
+          💾 Lưu
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
         </main>
       </div>
     </div>

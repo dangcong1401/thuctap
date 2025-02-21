@@ -96,7 +96,7 @@ function Sidebar({
             </h3>
             <ul className="mt-3 space-y-4">
               {/* Dashboard */}
-              <SidebarLinkGroup activecondition={pathname === "/" || pathname.includes("dashboard")}>
+              <SidebarLinkGroup activecondition={pathname.startsWith("/statistics") || pathname.startsWith("/")}>
                 {(handleClick, open) => {
                   return (
                     <React.Fragment>
